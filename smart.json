@@ -1,0 +1,9 @@
+{
+    "name": "chartjs",
+    "description": "Widget",
+    "homepage": "",
+    "author": "Wes Johnson",
+    "version": "0.1.0",
+    "git": "http://github.com/sterlingwes/meteor-chartjs",
+    "packages": {}
+}

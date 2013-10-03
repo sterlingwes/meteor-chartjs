@@ -1,0 +1,8 @@
+<template name="chartjs">
+    <canvas id="{{name}}" width="{{width}}" height="{{height}}"></canvas>
+    <ul class="chartjslegend resetList">
+        {{#each legend}}
+            <li><i class="icon-stop" style="color:{{color}}"></i> {{label}}</li>
+        {{/each}}
+    </ul>
+</template>

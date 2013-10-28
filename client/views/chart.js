@@ -1,9 +1,11 @@
 function getColor(ctx) {
-    var color = new RColor();
-    _.each(ctx.chartData, function(d,i) {
-        if(!d.color)
-            ctx.chartData[i].color = color.get(true);
-    });
+    if(ctx.chartData && _.isArray(ctx.chartData)) {
+        var color = new RColor();
+        _.each(ctx.chartData, function(d,i) {
+            if(!d.color)
+                ctx.chartData[i].color = color.get(true);
+        });
+    }
 }
 
 Template.chartjs.created = function() {
@@ -16,7 +18,8 @@ Template.chartjs.created = function() {
 
 Template.chartjs.helpers({
     legend: function() {
-        return this.chartData;
+        if(this.chartData && !this.chartData.labels)
+            return this.chartData;
     }
 });
 
@@ -26,7 +29,7 @@ Template.chartjs.rendered = function() {
     
     if(!ctx)    return;
     
-    if(ctx.chartData && ctx.chartData.length && !ctx.chartData[0].color) {
+    if(ctx.chartData && _.isArray(ctx.chartData) && ctx.chartData.length && !ctx.chartData[0].color) {
         getColor(ctx);
     }
     
@@ -35,7 +38,8 @@ Template.chartjs.rendered = function() {
         Meteor.setTimeout(function() {
             if(!ctx.chartCtx && jQuery.contains(document.documentElement, el[0])) {
                 ctx.chartCtx = el.get(0).getContext('2d');
-                ctx.chart = new Chart(ctx.chartCtx).Pie(ctx.chartData,ctx.chartOptions);
+                if(!ctx.type)   ctx.type = 'Pie';
+                ctx.chart = new Chart(ctx.chartCtx)[ctx.type](ctx.chartData,ctx.chartOptions);
             }
         },250);
     });
